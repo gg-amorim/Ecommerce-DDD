@@ -13,14 +13,14 @@ namespace Entities.Entities
 
         [Column("PROD_NOME")]
         [Display(Name = "Nome")]
-        public int Nome { get; set; }
+        public string Nome { get; set; }
 
         [Column("PROD_VALOR")]
         [Display(Name = "Valor")]
-        public int Valor { get; set; }
+        public decimal Valor { get; set; }
 
         [Column("PROD_ESTADO")]
         [Display(Name = "Estado")]
-        public int Estado { get; set; }
+        public bool Estado { get; set; }
     }
 }
