@@ -1,9 +1,10 @@
 ﻿using Entities.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Configuration
 {
-    public class BaseContext : DbContext
+    public class BaseContext : IdentityDbContext<ApplicationUser>
     {
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {
@@ -23,7 +24,7 @@ namespace Infra.Configuration
         }
         private string GetConnectionStringConfig()
         {
-            string strConnection = @"Data Source=LAPTOP-437NEVR9\SQLEXPRESS;Initial Catalog=EcommerceDDD;User ID=sa;Password=1234;";
+            string strConnection = @"Data Source=LAPTOP-437NEVR9\\SQLEXPRESS;Initial Catalog=Ecommerce-DDD;Integrated Security=False;User ID=sa;Password=1234;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
             return strConnection;
         }
     }
