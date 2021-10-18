@@ -27,6 +27,21 @@ namespace Infra.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("CPF")
+                        .HasColumnName("USR_CPF")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Celular")
+                        .HasColumnName("USR_CELULAR")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("Cep")
+                        .HasColumnName("USR_CEP")
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -38,11 +53,34 @@ namespace Infra.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Endereco")
+                        .HasColumnName("USR_ENDERECO")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("EnderecoComplemento")
+                        .HasColumnName("USR_COMPLEMENTO_ENDERECO")
+                        .HasColumnType("nvarchar(450)")
+                        .HasMaxLength(450);
+
+                    b.Property<bool>("Estado")
+                        .HasColumnName("USR_ESTADO")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Idade")
+                        .HasColumnName("USR_IDADE")
+                        .HasColumnType("int");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Nome")
+                        .HasColumnName("USR_NOME")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -64,6 +102,15 @@ namespace Infra.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Telefone")
+                        .HasColumnName("USR_TELEFONE")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<int>("Tipo")
+                        .HasColumnName("USR_TIPO")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -84,29 +131,91 @@ namespace Infra.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Entities.Entities.CompraUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("CUS_ID")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Estado")
+                        .HasColumnName("CUS_ESTADO")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdProduto")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProdutoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QtdCompra")
+                        .HasColumnName("CUS_QTD")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TB_COMPRA_USUARIO");
+                });
+
             modelBuilder.Entity("Entities.Entities.Produto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("PROD_ID")
+                        .HasColumnName("PRD_ID")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("DataAlteracao")
+                        .HasColumnName("PRD_DATA_ALTERACAO")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnName("PRD_DATA_CADASTRO")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnName("PRD_DESCRICAO")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
                     b.Property<bool>("Estado")
-                        .HasColumnName("PROD_ESTADO")
+                        .HasColumnName("PRD_ESTADO")
                         .HasColumnType("bit");
 
                     b.Property<string>("Nome")
-                        .HasColumnName("PROD_NOME")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnName("PRD_NOME")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("Observacao")
+                        .HasColumnName("PRD_OBSERVACAO")
+                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(20000);
+
+                    b.Property<int>("QtdEstoque")
+                        .HasColumnName("PRD_QTD_ESTOQUE")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnName("PROD_VALOR")
+                        .HasColumnName("PRD_VALO")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TB_PRODUTO");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -242,6 +351,24 @@ namespace Infra.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Entities.Entities.CompraUser", b =>
+                {
+                    b.HasOne("Entities.Entities.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("ProdutoId");
+
+                    b.HasOne("Entities.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Entities.Entities.Produto", b =>
+                {
+                    b.HasOne("Entities.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
