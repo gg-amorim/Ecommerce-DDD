@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infra.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,7 +49,7 @@ namespace Infra.Migrations
                     USR_CELULAR = table.Column<string>(maxLength: 20, nullable: true),
                     USR_TELEFONE = table.Column<string>(maxLength: 20, nullable: true),
                     USR_ESTADO = table.Column<bool>(nullable: false),
-                    USR_TIPO = table.Column<int>(nullable: false)
+                    USR_TIPO = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
