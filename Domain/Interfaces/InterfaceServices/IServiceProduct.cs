@@ -1,4 +1,7 @@
 ﻿using Entities.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Domain.Interfaces.InterfaceServices
@@ -8,5 +11,7 @@ namespace Domain.Interfaces.InterfaceServices
         Task AddProduct(Produto produto);
 
         Task UpdadeProduct(Produto produto);
+
+        Task<List<Produto>> ListarProdutosComEstoque();
     }
 }

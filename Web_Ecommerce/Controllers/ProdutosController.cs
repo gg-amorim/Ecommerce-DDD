@@ -11,14 +11,17 @@ namespace Web_Ecommerce.Controllers
     [Authorize]
     public class ProdutosController : Controller
     {
-        public readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public readonly InterfaceProductApp _interfaceProductApp;
+        private readonly InterfaceProductApp _interfaceProductApp;
 
-        public ProdutosController(InterfaceProductApp interfaceProductApp, UserManager<ApplicationUser> userManager)
+        private readonly InterfaceCompraUserApp _interfaceCompraUserApp;
+
+        public ProdutosController(InterfaceProductApp interfaceProductApp, UserManager<ApplicationUser> userManager, InterfaceCompraUserApp interfaceCompraUserAp)
         {
             _interfaceProductApp = interfaceProductApp;
             _userManager = userManager;
+            _interfaceCompraUserApp = interfaceCompraUserAp;
         }
 
         // GET: ProdutosController
@@ -52,7 +55,7 @@ namespace Web_Ecommerce.Controllers
 
                 produto.UserId = idUser;
 
-                await _interfaceProductApp.Add(produto);
+                await _interfaceProductApp.AddProduct(produto);
                 if (produto.Notificacoes.Any())
                 {
                     foreach (var item in produto.Notificacoes)
@@ -89,6 +92,9 @@ namespace Web_Ecommerce.Controllers
                     {
                         ModelState.AddModelError(item.NomePropriedade, item.Mensagem);
                     }
+
+                    ViewBag.Alerta = true;
+                    ViewBag.Mensagem = "Verifique, ocorreu algum erro!";
                     return View("Edit", produto);
                 }
             }
@@ -128,5 +134,38 @@ namespace Web_Ecommerce.Controllers
             return idUser.Id;
         }
 
+        [AllowAnonymous]
+        [HttpGet("/api/listaprodutos")]
+        public async Task<JsonResult> ListarProdutosComEstoque()
+        {
+            return Json(await _interfaceProductApp.ListarProdutosComEstoque());
+        }
+
+        public async Task<IActionResult> ListaProdutosCar()
+        {
+            var idUser = await RetornaIdUserLogado();
+            return View(await _interfaceProductApp.ListarProdutosCarUser(idUser));
+        }
+
+        public async Task<IActionResult> DeleteProdutoCar(int id)
+        {
+            return View(await _interfaceProductApp.ObterProdutosCar(id));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteProdutoCar(int id, Produto produto)
+        {
+            try
+            {
+                var produtoDeletar = await _interfaceCompraUserApp.GetById(id);
+                await _interfaceCompraUserApp.Delete(produtoDeletar);
+                return RedirectToAction(nameof(ListaProdutosCar));
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }

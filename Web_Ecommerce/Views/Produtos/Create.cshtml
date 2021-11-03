@@ -14,9 +14,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             @*<input asp-for="Id" type="hidden" />*@
-            <input asp-for="UserId" type="hidden" />
-            @Html.HiddenFor(x => x.UserId);
-            @Html.HiddenFor(x => x.Id);
+            @*<input asp-for="UserId" type="hidden" />*@
+            @Html.HiddenFor(x => x.UserId)
+            @Html.HiddenFor(x => x.Id)
 
 
             <div class="form-group">
@@ -41,7 +41,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="QtdEstoque" class="control-label"></label>
-                <input asp-for="QtdEstoque" class="form-control" />
+                <input asp-for="QtdEstoque" type="number" class="form-control" />
                 <span asp-validation-for="QtdEstoque" class="text-danger"></span>
             </div>
             <div class="form-group form-check">

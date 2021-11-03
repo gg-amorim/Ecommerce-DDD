@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+
+    @await Html.PartialAsync("_AlertaPartial")
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -20,10 +23,15 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Loja Virtual</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Produtos" asp-action="Index">Meus Produtos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Produtos" asp-action="ListaProdutosCar">
+                                <img src="~/img/Icone-Carrinho-de-Compras-PNG.png" width="20" height="20" /><span id="qtdeCarrinho"></span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -44,6 +52,14 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/jsProdutosVenda.js"></script>
+    <script>
+        window.setTimeout(function () {
+            $(".alert").fadeOut(1500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 5000);
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

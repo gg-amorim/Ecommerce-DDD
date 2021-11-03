@@ -11,5 +11,11 @@ namespace ApplicationApp.Interfaces
         Task UpdadeProduct(Produto produto);
 
         Task<List<Produto>> ListarProdutosUser(string idUser);
+
+        Task<List<Produto>> ListarProdutosComEstoque();
+
+        Task<List<Produto>> ListarProdutosCarUser(string userId);
+
+        Task<Produto> ObterProdutosCar(int idProdutoCar);
     }
 }
