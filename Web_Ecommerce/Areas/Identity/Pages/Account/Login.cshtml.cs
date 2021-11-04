@@ -51,7 +51,7 @@ namespace Web_Ecommerce.Areas.Identity.Pages.Account
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Lembrar sua senha?")]
             public bool RememberMe { get; set; }
         }
 

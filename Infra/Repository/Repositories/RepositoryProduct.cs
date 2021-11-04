@@ -77,7 +77,7 @@ namespace Infra.Repository.Repositories
         {
             using (var banco = new BaseContext(_optionsBuilder))
             {
-                return await banco.Produto.Where(x => x.UserId == idUser).AsNoTracking().ToListAsync();
+                return await banco.Produto.Where(x => x.UserId.Equals(idUser)).AsNoTracking().ToListAsync();
             }
         }
 

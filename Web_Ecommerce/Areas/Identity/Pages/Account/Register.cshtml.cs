@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+﻿using Entities.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Entities.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace Web_Ecommerce.Areas.Identity.Pages.Account
 {
@@ -52,9 +51,46 @@ namespace Web_Ecommerce.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
+            [MaxLength(11)]
+            [Display(Name = "CPF")]
+            public string CPF { get; set; }
+
+            [Display(Name = "Idade")]
+            public int Idade { get; set; }
+
+            [Required]
+            [MaxLength(255)]
+            [Display(Name = "Nome")]
+            public string Nome { get; set; }
+
+            [Required]
+            [MaxLength(15)]
+            [Display(Name = "CEP")]
+            public string CEP { get; set; }
+
+            [Required]
+            [MaxLength(255)]
+            [Display(Name = "Endereço")]
+            public string Endereco { get; set; }
+
+            [MaxLength(450)]
+            [Display(Name = "Complemento do Endereço")]
+            public string EnderecoComplemento { get; set; }
+
+            [Required]
+            [MaxLength(20)]
+            [Display(Name = "Celular")]
+            public string Celular { get; set; }
+
+
+            [MaxLength(20)]
+            [Display(Name = "Telefone")]
+            public string Telefone { get; set; }
+
+            [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Senha")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
@@ -75,7 +111,21 @@ namespace Web_Ecommerce.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { 
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    Celular = Input.Celular,
+                    Cep = Input.CEP,
+                    CPF = Input.CPF,
+                    Telefone = Input.Telefone,
+                    Endereco = Input.Endereco,
+                    EnderecoComplemento = Input.EnderecoComplemento,
+                    Idade = Input.Idade,
+                    Nome = Input.Nome,
+                    Estado = true,
+                    Tipo = Entities.Entities.Enums.TipoUser.Comum
+                
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
