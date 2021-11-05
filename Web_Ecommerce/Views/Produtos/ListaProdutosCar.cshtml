@@ -10,7 +10,9 @@
 <table class="table">
     <thead>
         <tr>
-
+            <th>
+                Imagem
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
@@ -33,6 +35,12 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(item.Url))
+                    {
+                        <img src="@item.Url" width="80" height="80" alt="" />
+                    }
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nome)
                 </td>

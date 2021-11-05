@@ -44,7 +44,8 @@ namespace Infra.Repository.Repositories
                                                  Observacao = p.Observacao,
                                                  Valor = p.Valor,
                                                  QtdCompra = c.QtdCompra,
-                                                 IdProdutoCar = c.Id
+                                                 IdProdutoCar = c.Id,
+                                                 Url = p.Url
                                              }).AsNoTracking().ToListAsync();
 
                 return produtosCarUser;
@@ -66,7 +67,8 @@ namespace Infra.Repository.Repositories
                                                  Observacao = p.Observacao,
                                                  Valor = p.Valor,
                                                  QtdCompra = c.QtdCompra,
-                                                 IdProdutoCar = c.Id
+                                                 IdProdutoCar = c.Id,
+                                                 Url = p.Url
                                              }).AsNoTracking().FirstOrDefaultAsync();
 
                 return produtosCarUser;

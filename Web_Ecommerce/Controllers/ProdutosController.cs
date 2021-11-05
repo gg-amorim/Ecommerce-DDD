@@ -1,9 +1,14 @@
 ﻿using ApplicationApp.Interfaces;
 using Entities.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
 using System.Linq;
+using System.Security;
+using System.Security.Permissions;
 using System.Threading.Tasks;
 
 namespace Web_Ecommerce.Controllers
@@ -17,11 +22,14 @@ namespace Web_Ecommerce.Controllers
 
         private readonly InterfaceCompraUserApp _interfaceCompraUserApp;
 
-        public ProdutosController(InterfaceProductApp interfaceProductApp, UserManager<ApplicationUser> userManager, InterfaceCompraUserApp interfaceCompraUserAp)
+        private IWebHostEnvironment _environment;
+
+        public ProdutosController(InterfaceProductApp interfaceProductApp, UserManager<ApplicationUser> userManager, InterfaceCompraUserApp interfaceCompraUserAp, IWebHostEnvironment environment)
         {
             _interfaceProductApp = interfaceProductApp;
             _userManager = userManager;
             _interfaceCompraUserApp = interfaceCompraUserAp;
+            _environment = environment;
         }
 
         // GET: ProdutosController
@@ -64,6 +72,7 @@ namespace Web_Ecommerce.Controllers
                     }
                     return View("Create", produto);
                 }
+                await SalvarImagemProduto(produto);
             }
             catch
             {
@@ -166,6 +175,38 @@ namespace Web_Ecommerce.Controllers
             {
                 return View();
             }
+        }
+
+        public async Task SalvarImagemProduto(Produto model)
+        {
+            try
+            {
+                var produto = await _interfaceProductApp.GetById(model.Id);
+
+                if (model.Imagem != null)
+                {
+                    var webRoot = _environment.WebRootPath;
+                    var permissionSet = new PermissionSet(PermissionState.Unrestricted);
+                    var writePermission = new FileIOPermission(FileIOPermissionAccess.Append, string.Concat(webRoot, "/files"));
+                    permissionSet.AddPermission(writePermission);
+
+                    var extension = Path.GetExtension(model.Imagem.FileName);
+
+                    var nomeArquivo = string.Concat(produto.Id.ToString(), extension);
+
+                    var diretorioArquivoSalvar = string.Concat(webRoot, "\\files\\", nomeArquivo);
+
+                    model.Imagem.CopyTo(new FileStream(diretorioArquivoSalvar, FileMode.Create));
+
+                    produto.Url = string.Concat("https://localhost:5001", "/files/", nomeArquivo);
+
+                    await _interfaceProductApp.UpdadeProduct(produto);
+                }
+            }
+            catch (Exception err)
+            {
+            }
+
         }
     }
 }
